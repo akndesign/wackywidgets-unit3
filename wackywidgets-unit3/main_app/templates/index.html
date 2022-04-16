@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<h1> Wacky Widget</h1>
+
+{% if widget_list|length == 0 %}
+<h3>No Widgets Exist</h3>
+<hr>
+{% else %}
+
+<table style=" border:1px solid black;margin-left:auto;margin-right:auto;">
+    <tr>
+        <th>
+            Description
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Delete
+        </th>
+    </tr>
+    {% endif %}
+    {% for widget in widgets %}
+    <tr>
+        <td>{{widget.description}}</td>
+        <td name="widgetQuantity">{{widget.quantity}}</td>
+        <td><a href="{% url 'delete_widget' widget.id %}">X</a></td>
+    </tr>
+
+    {% endfor %}
+
+
+    <h4>Add Widget</h4>
+    <form class="pure-form" method="post" action="{% url 'add_widget' %}">
+        {% csrf_token %}
+        <label for=" id_description">Description:</label>
+        <input type="text" name="description" class="input" placeholder="Description" maxlength="100" required=""
+            id="id_description">
+        <label for="id_quantity">Quantity:</label>
+        <input type="number" name="quantity" value="0" quantity="number" placeholder="0" required="" id="id_quantity">
+        <input type="submit" class="pure-button" value="Add Widget">
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+
+
+    {% endblock %}
